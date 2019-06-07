@@ -1,0 +1,45 @@
+version: '3'
+services:
+  fc-sose19-edge:
+    image: maven:3.6.1-jdk-11-slim
+    command: sh -c "mvn clean package && java -jar target/prototype-sose19-0.0.1-SNAPSHOT.jar"
+    volumes:
+      - ./:/home/fc/app
+    working_dir: /home/fc/app
+    ports:
+      - '3000:3000'
+  fc-sose19-zmq:
+    image: zeromqorg/malamute
+    command: >
+      /bin/sh -exc "
+      sudo apt-get update;
+      sudo apt install -y python3-pip;
+      sudo pip3 install pyzmq;
+      python3 scripts/zmq_pub.py"
+#      python3 scripts/zmq_sub.py"
+    ports:
+      - '5563:5563'
+    volumes:
+      - ./:/home/fc/app
+    working_dir: /home/fc/app
+#  simra-analytics-backend-postgis:
+#    image: mdillon/postgis:11
+#    environment:
+#      - POSTGRES_PASSWORD=SuperSecurePassword
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_DB=simra
+#    tmpfs:
+#      - /var/lib/postgresql/data
+#    volumes:
+#      - ./data/sqldump/dump.sql:/docker-entrypoint-initdb.d/dump.sql
+#    ports:
+#      - '5432:5432'
+#  postgis-gui-dev:
+#    image: dpage/pgadmin4
+#    volumes:
+#      - ./dev/postgres/pgadmin4/server.json:/pgadmin4/servers.json
+#    environment:
+#      - PGADMIN_DEFAULT_EMAIL=dev@simra
+#      - PGADMIN_DEFAULT_PASSWORD=1234
+#    ports:
+#      - '2345:80'
