@@ -1,22 +1,25 @@
 package de.fc.projekt.webnode.controllers;
 
-import de.fc.projekt.webnode.models.ParkingInfo;
-import de.fc.projekt.webnode.repositories.ParkingRepository;
+import de.fc.projekt.webnode.models.ParkingSpotInfo;
+import de.fc.projekt.webnode.repositories.ParkingSpotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
-@RequestMapping(path="/parking")
 public class ParkingController {
-
     @Autowired
-    private ParkingRepository parkingRepository;
+    private ParkingSpotRepository repository;
 
-    @RequestMapping("/all")
-    public @ResponseBody Iterable<ParkingInfo> GetAllParkingInfos()
+    @GetMapping("/spot")
+    public @ResponseBody Iterable<ParkingSpotInfo> GetAllParkingInfos()
     {
-        return parkingRepository.findAll();
+        return repository.findAll();
+    }
+    @GetMapping("/spot/{id}")
+    public Optional<ParkingSpotInfo> GetParkingSpotInfo(@PathVariable Long id)
+    {
+        return repository.findById(id);
     }
 }

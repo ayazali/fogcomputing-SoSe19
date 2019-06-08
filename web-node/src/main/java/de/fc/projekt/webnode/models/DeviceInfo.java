@@ -8,10 +8,12 @@ import javax.persistence.Id;
 @Entity
 public class DeviceInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long DeviceId;
     private String UUID;
     private String DeviceName;
+    private String DeviceDescription;
+    private DeviceStatus Status;
 
     public long getDeviceId() {
         return DeviceId;
@@ -52,9 +54,6 @@ public class DeviceInfo {
     public void setStatus(DeviceStatus status) {
         Status = status;
     }
-
-    private String DeviceDescription;
-    private DeviceStatus Status;
 
     public DeviceInfo(String UUID, String deviceName, String deviceDescription, DeviceStatus status) {
         this.UUID = UUID;

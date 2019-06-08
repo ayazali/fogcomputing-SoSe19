@@ -18,15 +18,15 @@ public class DeviceController {
     Iterable<DeviceInfo> GetAllDevices() {
         return deviceRepository.findAll();
     }
-    @RequestMapping(path ="", method = RequestMethod.PUT)
-    public void UpdateDevice(@RequestBody DeviceInfo deviceInfo)
-    {
+
+    @RequestMapping(path = "", method = RequestMethod.PUT)
+    public void UpdateDevice(@RequestBody DeviceInfo deviceInfo) {
         deviceRepository.findById(deviceInfo.getDeviceId()).orElseThrow(() -> new IllegalArgumentException("Invalid device"));
     }
 
     @GetMapping("/{id}")
     public @ResponseBody
-    Optional<DeviceInfo> GetDevice(@PathVariable("id") long id) {
+    Optional<DeviceInfo> GetDevice(long id) {
         return deviceRepository.findById(id);
     }
 
