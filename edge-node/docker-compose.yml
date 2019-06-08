@@ -9,7 +9,7 @@ services:
       - '6379:6379'
   fc-sose19-app-edge:
     image: maven:3.6.1-jdk-11-slim
-    command: sh -c "mvn clean package && java -jar target/prototype-sose19-0.0.1-SNAPSHOT.jar"
+    command: sh -c "mvn clean package && mvn spring-boot:run"
     volumes:
       - ./:/home/fc/app
     working_dir: /home/fc/app

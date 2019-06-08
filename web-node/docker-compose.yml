@@ -1,0 +1,22 @@
+version: '3'
+services:
+  fc-sose19-mysql-web:
+    image: mysql:5.7
+    restart: always
+#    command: sh -c "mysql start"
+    # Use a volume to support persistent storage on container restart.
+    volumes:
+      - ./host/mysql:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD : fogcomputing
+      MYSQL_DATABASE : fog_schema
+#  fc-sose19-app-web:
+#    image: maven:3.6.1-jdk-11-slim
+#    command: sh -c "mvn clean package && java -jar target/prototype-sose19-0.0.1-SNAPSHOT.jar"
+#    volumes:
+#      - ./:/home/fc/app
+#    working_dir: /home/fc/app
+#    ports:
+#      - '3000:3000'
