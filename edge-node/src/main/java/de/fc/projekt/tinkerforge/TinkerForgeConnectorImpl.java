@@ -1,6 +1,11 @@
 package de.fc.projekt.tinkerforge;
 
 import com.tinkerforge.*;
+import de.fc.projekt.comm.RabbitMQConnector;
+import de.fc.projekt.comm.RedisConnector;
+
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 public class TinkerForgeConnectorImpl implements TinkerForgeConnector {
 
@@ -12,6 +17,8 @@ public class TinkerForgeConnectorImpl implements TinkerForgeConnector {
 
     private IPConnection ipcon; // Create IP connection
     private BrickletDistanceIRV2 dir = null;
+
+    private RabbitMQConnector rabbitMQConnector;
 
     @Override
     public void connect(String hostname, Integer portNum, String UID) throws Exception {
@@ -44,6 +51,27 @@ public class TinkerForgeConnectorImpl implements TinkerForgeConnector {
     public boolean persistSensorReading(int distance) {
         System.out.println("Distance: " + distance / 10.0 + " cm");
         return false;
+    }
+
+    @Override
+    public void setRedisConnector(RedisConnector redisConnector) throws IOException, TimeoutException {
+        //TODO Implement in next iteration
+    }
+
+    @Override
+    public void startActiveCaching() {
+        //TODO Implement in next iteration
+    }
+
+    @Override
+    public void flushCache() {
+        //TODO Implement in next iteration
+    }
+
+    @Override
+    public void setRabbitMQConnector(RabbitMQConnector rabbitMQConnecter) throws IOException, TimeoutException {
+        this.rabbitMQConnector = rabbitMQConnecter;
+        this.rabbitMQConnector.connect();
     }
 
 
