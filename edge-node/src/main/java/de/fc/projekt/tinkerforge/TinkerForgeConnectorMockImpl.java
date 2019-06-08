@@ -4,12 +4,16 @@ import com.google.gson.JsonObject;
 import com.tinkerforge.BrickletDistanceIRV2;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
-import de.fc.projekt.comm.ZeroMQConnector;
-
+import de.fc.projekt.comm.RabbitMQConnector;
+import de.fc.projekt.comm.RedisConnector;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
+import java.util.UUID;
+import java.util.concurrent.*;
 
 public class TinkerForgeConnectorMockImpl implements TinkerForgeConnector {
 
@@ -22,13 +26,11 @@ public class TinkerForgeConnectorMockImpl implements TinkerForgeConnector {
     private IPConnection ipcon; // Create IP connection
     private BrickletDistanceIRV2 dir = null;
 
-    private ZeroMQConnector zeroMQConnector;
+    private RabbitMQConnector rabbitMQConnector;
+    private RedisConnector redisConnector;
 
-    public TinkerForgeConnectorMockImpl(){
-
-        this.zeroMQConnector = new ZeroMQConnector("*", 5563);
-        this.zeroMQConnector.connect();
-    }
+    private boolean cachedMode = false;
+    private ScheduledFuture<?> beeperHandle = null;
 
     @Override
     public void connect(String hostname, Integer portNum, String UID) throws Exception {
@@ -46,12 +48,63 @@ public class TinkerForgeConnectorMockImpl implements TinkerForgeConnector {
 
     @Override
     public boolean persistSensorReading(int distance) {
-        //System.out.println("Distance: " + distance / 10.0 + " cm");
+
         JsonObject distJsonObj = new JsonObject();
+        distJsonObj.addProperty("uid", UUID.randomUUID().toString());
         distJsonObj.addProperty("value", distance);
         Date now = new Date(System.currentTimeMillis());
         distJsonObj.addProperty("timestamp", this.toISO8601UTC(now));
-        return this.zeroMQConnector.post(distJsonObj);
+
+        if(cachedMode){
+            return this.redisConnector.post(distJsonObj);
+        } else {
+            return this.rabbitMQConnector.post(distJsonObj);
+        }
+    }
+
+    @Override
+    public void setRabbitMQConnector(RabbitMQConnector rabbitMQConnector) throws IOException, TimeoutException {
+        this.rabbitMQConnector = rabbitMQConnector;
+        this.rabbitMQConnector.connect();
+    }
+
+    @Override
+    public void setRedisConnector(RedisConnector redisConnector) {
+        this.redisConnector = redisConnector;
+        this.redisConnector.connect();
+    }
+
+    @Override
+    public void startActiveCaching() {
+        this.cachedMode = true;
+        ScheduledExecutorService executor =
+                Executors.newSingleThreadScheduledExecutor();
+
+        Runnable periodicTask = () -> {
+            // Invoke method(s) to do the work
+            boolean statusOf = this.rabbitMQConnector.isConnectionOpen();
+            if(statusOf) {
+                this.cachedMode = false;
+                this.beeperHandle.cancel(true);
+                System.out.println("Connection restored to rabittmq.");
+                this.flushCache();
+            } else {
+                System.out.println("No connection to rabittmq.");
+            }
+
+        };
+
+        this.beeperHandle = executor.scheduleAtFixedRate(periodicTask, 0, 10, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void flushCache() {
+
+        List<JsonObject> cachedData = this.redisConnector.getValues();
+
+        for(JsonObject singleEntry: cachedData){
+            this.rabbitMQConnector.post(singleEntry);
+        }
     }
 
 //    public void generateRandomValues(){
