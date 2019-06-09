@@ -15,4 +15,7 @@ public interface TinkerForgeConnector {
     void setRedisConnector(RedisConnector redisConnector) throws IOException, TimeoutException;
     void startActiveCaching();
     void flushCache();
+
+    String getDeviceId();
+    void setDeviceId(String deviceId);
 }

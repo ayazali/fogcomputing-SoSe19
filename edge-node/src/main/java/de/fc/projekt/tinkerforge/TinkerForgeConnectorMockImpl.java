@@ -32,6 +32,8 @@ public class TinkerForgeConnectorMockImpl implements TinkerForgeConnector {
     private boolean cachedMode = false;
     private ScheduledFuture<?> beeperHandle = null;
 
+    private String deviceId;
+
     @Override
     public void connect(String hostname, Integer portNum, String UID) throws Exception {
 
@@ -50,6 +52,7 @@ public class TinkerForgeConnectorMockImpl implements TinkerForgeConnector {
     public boolean persistSensorReading(int distance) {
 
         JsonObject distJsonObj = new JsonObject();
+        distJsonObj.addProperty("device-uuid", this.getDeviceId());
         distJsonObj.addProperty("uid", UUID.randomUUID().toString());
         distJsonObj.addProperty("value", distance);
         Date now = new Date(System.currentTimeMillis());
@@ -123,4 +126,11 @@ public class TinkerForgeConnectorMockImpl implements TinkerForgeConnector {
         return df.format(date);
     }
 
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 }
