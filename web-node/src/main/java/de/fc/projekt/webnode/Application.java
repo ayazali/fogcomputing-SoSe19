@@ -21,14 +21,18 @@ public class Application {
 
     @Autowired
     MQEntryRepository mqEntryRepository;
-
+    @Autowired
+    RabbitMQConnector rabbitMQConnector;
     @PostConstruct
     public void addQueueListeners() {
-        MQEntry entry_eins = new MQEntry("192.168.178.46", 5672, "guest", "guest", "ParkenEtage");
+        MQEntry entry_eins = new MQEntry("192.168.178.47", 5672, "guest", "guest", "ParkenEtage");
         this.mqEntryRepository.save(entry_eins);
 
-        RabbitMQConnector rabbitMQConnector = new RabbitMQConnector(entry_eins.getQueueName(), entry_eins.getHostname(),
-                entry_eins.getPort(), entry_eins.getMqUsername(), entry_eins.getMqPassword());
+        rabbitMQConnector.setQUEUE_NAME(entry_eins.getQueueName())
+                .setMQ_HOSTNAME( entry_eins.getHostname())
+                .setMQ_PORT(entry_eins.getPort())
+                .setMQ_USERNAME(entry_eins.getMqUsername())
+                .setMQ_PASSWORD(entry_eins.getMqPassword());
 
         try {
             rabbitMQConnector.connect();

@@ -8,11 +8,54 @@ import java.util.Date;
 
 @Entity
 public class ParkingLog {
+    public double getLogId() {
+        return logId;
+    }
+
+    public long getParkingSpotId() {
+        return ParkingSpotId;
+    }
+
+    public ParkingLog setParkingSpotId(long parkingSpotId) {
+        ParkingSpotId = parkingSpotId;
+        return this;
+    }
+
+    public ParkingSpotStatus getStatus() {
+        return Status;
+    }
+
+    public ParkingLog setStatus(ParkingSpotStatus status) {
+        Status = status;
+        return this;
+    }
+
+    public String getLogDetail() {
+        return LogDetail;
+    }
+
+    public ParkingLog setLogDetail(String logDetail) {
+        LogDetail = logDetail;
+        return this;
+    }
+
+    public Date getCreatedOn() {
+        return CreatedOn;
+    }
+
+    public ParkingLog setCreatedOn(Date createdOn) {
+        CreatedOn = createdOn;
+        return this;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private double logId;
     private long ParkingSpotId;
-    private String Status;
+    private ParkingSpotStatus Status;
     private String LogDetail;
     private Date CreatedOn;
+
+    public ParkingLog(){
+    }
 }
