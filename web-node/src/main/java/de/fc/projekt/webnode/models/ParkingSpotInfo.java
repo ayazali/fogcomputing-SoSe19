@@ -12,31 +12,48 @@ public class ParkingSpotInfo {
         return parkingName;
     }
 
-    public void setParkingName(String parkingName) {
-        this.parkingName = parkingName;
-    }
 
     public String getParkingDescription() {
         return parkingDescription;
-    }
-
-    public void setParkingDescription(String parkingDescription) {
-        this.parkingDescription = parkingDescription;
     }
 
     private String parkingName;
     private String parkingDescription;
     private ParkingSpotStatus Status;
 
-    @OneToOne
-    @JoinColumn(name = "device_id")
-    private DeviceInfo Device;
+    public long getParkingSpotId() {
+        return parkingSpotId;
+    }
+
+    public ParkingSpotInfo setParkingName(String parkingName) {
+        this.parkingName = parkingName;
+        return this;
+    }
+
+    public ParkingSpotInfo setParkingDescription(String parkingDescription) {
+        this.parkingDescription = parkingDescription;
+        return this;
+    }
+
+    public ParkingSpotStatus getStatus() {
+        return Status;
+    }
+
+    public ParkingSpotInfo setStatus(ParkingSpotStatus status) {
+        Status = status;
+        return this;
+    }
+
+    public ParkingSpotInfo setParkingSpotId(long parkingSpotId) {
+        this.parkingSpotId = parkingSpotId;
+        return this;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "device_id", referencedColumnName = "device_id")
+    private DeviceInfo deviceInfo;
 
     public ParkingSpotInfo() {
     }
 
-    public ParkingSpotInfo(String parkingName, String parkingDescription) {
-        this.parkingName = parkingName;
-        this.parkingDescription = parkingDescription;
-    }
 }

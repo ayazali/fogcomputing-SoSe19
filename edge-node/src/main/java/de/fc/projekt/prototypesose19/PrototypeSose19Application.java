@@ -33,6 +33,9 @@ public class PrototypeSose19Application {
     @Value("${redis.port}")
     private int RD_PORT;
 
+    @Value("${device.id}")
+    private String DEVICE_ID;
+
     public static void main(String[] args) {
 
         SpringApplication.run(PrototypeSose19Application.class, args);
@@ -45,6 +48,7 @@ public class PrototypeSose19Application {
 
         try {
             tinkerForgeConnector = new TinkerForgeConnectorMockImpl();
+            tinkerForgeConnector.setDeviceId(DEVICE_ID);
             tinkerForgeConnector.setRabbitMQConnector(new RabbitMQConnector(QUEUE_NAME, MQ_HOSTNAME, MQ_PORT, MQ_USERNAME, MQ_PASSWORD));
             tinkerForgeConnector.setRedisConnector(new RedisConnector(RD_HOSTNAME, RD_PORT));
         } catch (Exception e) {

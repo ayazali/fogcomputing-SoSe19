@@ -20,6 +20,8 @@ public class TinkerForgeConnectorImpl implements TinkerForgeConnector {
 
     private RabbitMQConnector rabbitMQConnector;
 
+    private String deviceId;
+
     @Override
     public void connect(String hostname, Integer portNum, String UID) throws Exception {
 
@@ -75,4 +77,11 @@ public class TinkerForgeConnectorImpl implements TinkerForgeConnector {
     }
 
 
+    public String getDeviceId() {
+        return this.deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
 }
