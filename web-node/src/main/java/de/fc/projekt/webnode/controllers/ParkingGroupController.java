@@ -11,6 +11,7 @@ import java.util.Optional;
 
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ParkingGroupController {
     @Autowired
     private ParkingGroupRepository repository;

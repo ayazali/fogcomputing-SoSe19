@@ -2,7 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <!-- <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/> -->
-    <Welcome msg="Welcome Component"/>
+    <Welcome msg="Welcome"/>
   </div>
 </template>
 

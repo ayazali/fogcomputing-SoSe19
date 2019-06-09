@@ -1,7 +1,5 @@
 : <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>Welcome Component</p>
     <b-table striped hover :items="spots"></b-table>
   </div>
 </template>
@@ -13,17 +11,32 @@ import { RestApi } from "../services/RestApi";
 @Component
 export default class Welcome extends Vue {
   @Prop() private msg!: string;
-  //@Prop() private spots!: Array<object>;
-
+  private listOfSpots: Array<object> = [];
   private restApi = new RestApi();
+  private timer: any;
 
   get spots() {
+    return this.listOfSpots;
+  }
+
+  created() {
+    this.getVonAPI();
+    this.timer = setInterval(this.getVonAPI, 10000);
+  }
+
+  getVonAPI() {
     this.restApi.getSpots().then((resp: any) => {
-      console.log(resp);
+      this.listOfSpots = resp["data"].map((el: any) => {
+        if (el.status === "FREE") {
+          el._rowVariant = "success";
+        }
+        return el;
+      });
     });
-    let returnArr = [];
-    returnArr.push({ name: "ayaz" });
-    return returnArr;
+  }
+
+  beforeDestroy() {
+    clearInterval(this.timer);
   }
 }
 </script>
