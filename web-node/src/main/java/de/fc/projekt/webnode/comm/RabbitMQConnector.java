@@ -43,8 +43,8 @@ public class RabbitMQConnector {
     private Connection connection;
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
     private float DISTANCE_MAX = 150;
-
-    private float THRESHOLD_DISTANCE= 30;
+    private float THRESHOLD_DISTANCE_MIN= 30;
+    private float THRESHOLD_DISTANCE_MAX= 120;
     private float DISTANCE_MIN = 20;
 
     public RabbitMQConnector() {
@@ -122,7 +122,7 @@ public class RabbitMQConnector {
             var date = formatter.parse(timestamp);
             var deviceStatus = ( distance > DISTANCE_MIN && distance < DISTANCE_MAX )?
                     DeviceStatus.ACTIVE_WITHIN_THRESHHOLD: DeviceStatus.ACTIVE_OUTSIDE_THRESHHOLD;
-            var parkingSpotStatus = ( distance > THRESHOLD_DISTANCE && distance < DISTANCE_MAX )?
+            var parkingSpotStatus = ( distance > THRESHOLD_DISTANCE_MIN && distance < THRESHOLD_DISTANCE_MAX )?
                     ParkingSpotStatus.OCCUPIED: ParkingSpotStatus.FREE ;
             DeviceInfo deviceInfo = deviceRepository.findByUniqueId(deviceuuid.getAsString());
             System.out.println("deviceInfo=" + deviceInfo.toString());
@@ -144,7 +144,7 @@ public class RabbitMQConnector {
                         .setStatus(parkingSpotInfo.getStatus())
                         .setLogDetail(uid)
                         .setCreatedOn(Date.from(Instant.now()));
-                parkingLogRepository.add(parkingLog);
+                parkingLogRepository.save(parkingLog);
             }
         } catch (ParseException e) {
             e.printStackTrace();
