@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 public class ParkingLog {
-    public double getLogId() {
+    public Long getLogId() {
         return logId;
     }
 
@@ -48,9 +48,13 @@ public class ParkingLog {
         return this;
     }
 
+    public ParkingLog setLogId(Long logId) {
+        this.logId = logId;
+        return this;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private double logId;
+    private Long logId;
     private long ParkingSpotId;
     private ParkingSpotStatus Status;
     private String LogDetail;
