@@ -112,20 +112,15 @@ public class RabbitMQConnector {
 
         try {
             var deviceuuid = jsonObject.get("device-uuid");
-            System.out.println("deviceuuid=" + deviceuuid);
             var uid = jsonObject.get("uid").getAsString();
-            System.out.println("uuid=" + uid);
             var distance = jsonObject.get("value").getAsFloat();
-            System.out.println("distance=" + distance);
             var timestamp = jsonObject.get("timestamp").getAsString();
-            System.out.println("timestamp=" + timestamp);
             var date = formatter.parse(timestamp);
             var deviceStatus = ( distance > DISTANCE_MIN && distance < DISTANCE_MAX )?
                     DeviceStatus.ACTIVE_WITHIN_THRESHHOLD: DeviceStatus.ACTIVE_OUTSIDE_THRESHHOLD;
             var parkingSpotStatus = ( distance > THRESHOLD_DISTANCE_MIN && distance < THRESHOLD_DISTANCE_MAX )?
                     ParkingSpotStatus.OCCUPIED: ParkingSpotStatus.FREE ;
             DeviceInfo deviceInfo = deviceRepository.findByUniqueId(deviceuuid.getAsString());
-            System.out.println("deviceInfo=" + deviceInfo.toString());
             ParkingSpotInfo parkingSpotInfo = parkingSpotRepository.findByDeviceInfoDeviceId(deviceInfo.getDeviceId());
             var currentStatus = parkingSpotInfo.getStatus();
             DeviceLog deviceLog = new DeviceLog()

@@ -19,7 +19,7 @@ public class ParkingSpotInfo {
 
     private String parkingName;
     private String parkingDescription;
-    private ParkingSpotStatus Status;
+    private ParkingSpotStatus status;
 
     public long getParkingSpotId() {
         return parkingSpotId;
@@ -36,11 +36,11 @@ public class ParkingSpotInfo {
     }
 
     public ParkingSpotStatus getStatus() {
-        return Status;
+        return status;
     }
 
     public ParkingSpotInfo setStatus(ParkingSpotStatus status) {
-        Status = status;
+        this.status = status;
         return this;
     }
 
