@@ -110,15 +110,6 @@ public class TinkerForgeConnectorMockImpl implements TinkerForgeConnector {
         }
     }
 
-//    public void generateRandomValues(){
-//        int max = 120;
-//        int min = 30;
-//        int random = (int )(Math.random() * max + min);
-//
-//        this.persistSensorReading(random);
-//    }
-
-
     public String toISO8601UTC(Date date) {
         TimeZone tz = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");

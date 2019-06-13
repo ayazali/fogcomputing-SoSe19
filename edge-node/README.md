@@ -1,6 +1,10 @@
 # fogcomputing-SoSe19
 A simple application to detect free available parking spots using Tinkerforge. Developed for Fog Computing course @ TU Berlin
 
+There are two modes available in the application
+- `mvn spring-boot:run -Dspring-boot.run.arguments=--exec_mode=mock`
+- `mvn spring-boot:run -Dspring-boot.run.arguments=--exec_mode=aktual`
+
 We can also configure a different file at runtime if we need to, using an environment property:
 - java -jar app.jar --spring.config.location=classpath:/another-location.properties
 
@@ -8,7 +12,7 @@ We can also configure a different file at runtime if we need to, using an enviro
 
 1. Java
 2. Maven
-3. redis 
+3. redis
 4. docker
 
 ### Installing
