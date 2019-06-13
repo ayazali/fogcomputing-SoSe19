@@ -5,10 +5,11 @@ We can also configure a different file at runtime if we need to, using an enviro
 - java -jar app.jar --spring.config.location=classpath:/another-location.properties
 
 ### Prerequisites
-1.Java
-2.Maven
-3.redis 
-4.docker
+
+1. Java
+2. Maven
+3. redis 
+4. docker
 
 ### Installing
 
