@@ -42,10 +42,11 @@ public class RabbitMQConnector {
     private Channel channel;
     private Connection connection;
     private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
-    private float DISTANCE_MAX = 150;
-    private float THRESHOLD_DISTANCE_MIN= 30;
-    private float THRESHOLD_DISTANCE_MAX= 120;
-    private float DISTANCE_MIN = 20;
+
+    private float DISTANCE_MAX = 150 * 10;
+    private float THRESHOLD_DISTANCE_MIN = 10 * 10;
+    private float THRESHOLD_DISTANCE_MAX = 120 * 10;
+    private float DISTANCE_MIN = 20 * 10;
 
     public RabbitMQConnector() {
     }
