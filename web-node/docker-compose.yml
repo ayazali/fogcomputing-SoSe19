@@ -12,11 +12,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD : fogcomputing
       MYSQL_DATABASE : fog_schema
-#  fc-sose19-app-web:
-#    image: maven:3.6.1-jdk-11-slim
-#    command: sh -c "mvn clean package && java -jar target/prototype-sose19-0.0.1-SNAPSHOT.jar"
-#    volumes:
-#      - ./:/home/fc/app
-#    working_dir: /home/fc/app
-#    ports:
-#      - '3000:3000'
+  fc-sose19-app-web:
+    image: maven:3.6.1-jdk-11-slim
+    command: sh -c "mvn clean package && java -jar target/prototype-sose19-0.0.1-SNAPSHOT.jar"
+    volumes:
+      - ./:/home/fc/app
+    working_dir: /home/fc/app
+    ports:
+      - '3000:3000'
