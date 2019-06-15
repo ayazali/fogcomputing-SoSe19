@@ -5,13 +5,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { RestApi } from "../services/RestApi";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import { RestApi } from '../services/RestApi';
 
 @Component
 export default class Welcome extends Vue {
   @Prop() private msg!: string;
-  private listOfSpots: Array<object> = [];
+  private listOfSpots: object[] = [];
   private restApi = new RestApi();
   private timer: any;
 
@@ -19,23 +19,24 @@ export default class Welcome extends Vue {
     return this.listOfSpots;
   }
 
-  created() {
+  public created() {
     this.getVonAPI();
     this.timer = setInterval(this.getVonAPI, 10000);
   }
 
-  getVonAPI() {
+  public getVonAPI() {
     this.restApi.getSpots().then((resp: any) => {
-      this.listOfSpots = resp["data"].map((el: any) => {
-        if (el.status === "FREE") {
-          el._rowVariant = "success";
+      const dataIndex = 'data';
+      this.listOfSpots = resp[dataIndex].map((el: any) => {
+        if (el.status === 'FREE') {
+          el._rowVariant = 'success';
         }
         return el;
       });
     });
   }
 
-  beforeDestroy() {
+  public beforeDestroy() {
     clearInterval(this.timer);
   }
 }
